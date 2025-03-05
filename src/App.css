@@ -1,0 +1,17 @@
+.difficulty{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}
+
+.easy{
+  background-color: green;
+}
+
+.medium{
+  background-color: orange;
+}
+
+.hard{
+  background-color: red;
+}

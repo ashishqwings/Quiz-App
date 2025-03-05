@@ -1,5 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mcqQuestions } from "./questions";
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+}
 
 const Question = ({answers, index, submitted}) => {
 
@@ -8,16 +16,11 @@ const Question = ({answers, index, submitted}) => {
     let statement = mcqQuestions[index].statement;
     let options = mcqQuestions[index].options;
     let correct = mcqQuestions[index].correct;
+    let difficulty = mcqQuestions[index].difficulty;
 
-    // function shuffleArray(array) {
-    //     for (let i = array.length - 1; i > 0; i--) {
-    //       const j = Math.floor(Math.random() * (i + 1));
-    //       [array[i], array[j]] = [array[j], array[i]]; // Swap elements
-    //     }
-    //     return array;
-    // }
-
-    // options = shuffleArray(options);
+    // useEffect(() => {
+    //     options = shuffleArray(options);
+    // }, [])
     
 
     function handleChange(e){
@@ -29,6 +32,7 @@ const Question = ({answers, index, submitted}) => {
     return ( 
         <div>
             <p>{statement}</p>
+            <div className={"difficulty " + difficulty}></div>
             {
                 options.map(option => (
                     <>
@@ -39,7 +43,8 @@ const Question = ({answers, index, submitted}) => {
                             name="option" 
                             value={option} 
                             checked={selectedOption === option}
-                            /> {option}
+                        /> 
+                        {option}
                     </label>
                     <br/>
                     </>

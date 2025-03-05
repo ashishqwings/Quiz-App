@@ -13,7 +13,6 @@ function App() {
 
   function handleNextClick() {
     setIndex(prev => prev + 1);
-    console.log(answers.current)
   }
 
   function handlePreviousClick() {
