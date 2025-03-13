@@ -9,29 +9,34 @@ function shuffleArray(array) {
     return array;
 }
 
-const Question = ({answers, index, submitted}) => {
+const Question = ({answers, index, submitted, renderCount}) => {
 
     const [selectedOption, setSelectedOption] = useState("");
-
-    let statement = mcqQuestions[index].statement;
-    let options = mcqQuestions[index].options;
-    let correct = mcqQuestions[index].correct;
+  
+    let statement  = mcqQuestions[index].statement;
+    let options    = mcqQuestions[index].options;
+    let correct    = mcqQuestions[index].correct;
     let difficulty = mcqQuestions[index].difficulty;
 
-    // useEffect(() => {
-    //     options = shuffleArray(options);
-    // }, [])
     
+    useEffect(() => {
+        if(answers.current[index]) {
+            setSelectedOption(answers.current[index]);
+        } else {
+            setSelectedOption("");
+        }
+    }, [index, renderCount]);  
+
 
     function handleChange(e){
-        console.log(e.target.value)
         setSelectedOption(e.target.value);
         answers.current = {...answers.current, [index]: e.target.value}
+        
     }
 
     return ( 
         <div>
-            <p>{statement}</p>
+            <p>{index + 1 + ". " + statement}</p>
             <div className={"difficulty " + difficulty}></div>
             {
                 options.map(option => (
@@ -58,9 +63,11 @@ const Question = ({answers, index, submitted}) => {
             <p>+4</p>
             }
 
-{
+            {
             submitted 
-            && 
+            &&
+            answers.current[index] 
+            &&
             answers.current[index] !== correct
             &&
             <p>-1</p>

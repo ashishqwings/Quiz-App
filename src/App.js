@@ -7,6 +7,7 @@ function App() {
 
   const [index, setIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
+  const [renderCount, setRenderCount] = useState(0);
   const answers = useRef({});  //stores what answer we have chosen for which question
   const score = useRef(0);
 
@@ -23,7 +24,8 @@ function App() {
 
     if(!submitted) {
       mcqQuestions.forEach((ques, index) => {
-
+        
+        
         if(answers.current[index] && ques.correct === answers.current[index]) {
           score.current += 4;
         }
@@ -35,6 +37,13 @@ function App() {
     setSubmitted(true);
   }
 
+  function handleClearClick(){
+    console.log(answers.current)
+    delete answers.current[index];
+    setRenderCount(prev => prev + 1);
+    console.log(answers.current)
+  }
+
 
   return (
     <div className="App">
@@ -42,6 +51,7 @@ function App() {
         answers={answers}
         index={index}
         submitted={submitted}
+        renderCount={renderCount}
         />
 
       <button 
@@ -54,6 +64,11 @@ function App() {
         onClick={handleNextClick} 
         disabled={index == mcqQuestions.length - 1}>
           Next
+      </button>
+
+      <button 
+        onClick={handleClearClick}>
+          Clear
       </button>
 
       <button 
