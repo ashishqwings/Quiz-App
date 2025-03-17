@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { mcqQuestions } from "./questions";
 
 function shuffleArray(array) {
@@ -9,7 +9,7 @@ function shuffleArray(array) {
     return array;
 }
 
-const Question = ({answers, index, submitted, renderCount}) => {
+const Question = ({answers, index, submitted, renderCount, pollResults}) => {
 
     const [selectedOption, setSelectedOption] = useState("");
   
@@ -17,6 +17,10 @@ const Question = ({answers, index, submitted, renderCount}) => {
     let options    = mcqQuestions[index].options;
     let correct    = mcqQuestions[index].correct;
     let difficulty = mcqQuestions[index].difficulty;
+
+    useEffect(() => {
+        console.log(pollResults)
+    }, [pollResults])
 
     
     useEffect(() => {
@@ -35,26 +39,29 @@ const Question = ({answers, index, submitted, renderCount}) => {
     }
 
     return ( 
-        <div>
-            <p>{index + 1 + ". " + statement}</p>
+        <div className="question">
+            <p className="statement">{index + 1 + ". " + statement}</p>
             <div className={"difficulty " + difficulty}></div>
-            {
-                options.map(option => (
-                    <>
-                    <label>
-                        <input 
-                            onChange={(e) => handleChange(e)} 
-                            type="radio" 
-                            name="option" 
-                            value={option} 
-                            checked={selectedOption === option}
-                        /> 
-                        {option}
-                    </label>
-                    <br/>
-                    </>
-                ))
-            }
+            <div className="options">
+                {
+                    options.map((option, i) => (
+                        <div className="option">
+                            <input 
+                                className="option-input"
+                                onChange={(e) => handleChange(e)} 
+                                type="radio" 
+                                name="option" 
+                                value={option} 
+                                checked={selectedOption === option}
+                            /> 
+                            <label className="option-label">
+                                {option} {pollResults[index] && pollResults[index][i]}
+                            </label>
+                        
+                        </div>
+                    ))
+                }
+            </div>
             {
             submitted 
             && 
