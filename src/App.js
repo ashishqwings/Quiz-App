@@ -1,7 +1,8 @@
 import './App.css';
 import { mcqQuestions } from './questions';
 import Question from './Question';
-import { useState, useRef, use } from 'react';
+import Countdown from './Countdown';
+import { useState, useRef, use, useEffect } from 'react';
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -20,8 +21,22 @@ function App() {
   const [is5050Clicked, setIs5050Clicked] = useState(false);
   const [isPollUsed, setIsPollUsed] = useState(false);
   const [pollResults, setPollResults] = useState({});
+  const [timer, setTimer] = useState(5);
   const answers = useRef({});  //stores what answer we have chosen for which question
   const score = useRef(0);
+
+  useEffect(() => {
+
+    if(timer === 1 && index == mcqQuestions.length - 1) {
+      setSubmitted(true);
+    }
+
+    else if (timer === 0) {
+      setIndex(curr => curr + 1);
+      setTimer(5);
+    }
+  }, [timer])
+
 
 
   function handleNextClick() {
@@ -91,6 +106,7 @@ function App() {
 
   return (
     <div className="App">
+      <Countdown timer={timer} setTimer={setTimer} index={index}/>
       <Question 
         answers={answers}
         index={index}
