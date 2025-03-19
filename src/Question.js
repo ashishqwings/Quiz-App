@@ -9,7 +9,7 @@ function shuffleArray(array) {
     return array;
 }
 
-const Question = ({answers, index, submitted, renderCount, pollResults}) => {
+const Question = ({answers, index, submitted, renderCount, pollResults, questionsStatus, setQuestionsStatus}) => {
 
     const [selectedOption, setSelectedOption] = useState("");
   
@@ -35,12 +35,14 @@ const Question = ({answers, index, submitted, renderCount, pollResults}) => {
     function handleChange(e){
         setSelectedOption(e.target.value);
         answers.current = {...answers.current, [index]: e.target.value}
-        
+        let tempArray = questionsStatus;
+        tempArray[index] = 'answered';
+        setQuestionsStatus(tempArray);
     }
 
     return ( 
-        <div className="question">
-            <p className="statement">{index + 1 + ". " + statement}</p>
+        <div className={"question"}>
+            <p className="statement">{(index + 1 )+ ". " + statement}</p>
             <div className={"difficulty " + difficulty}></div>
             <div className="options">
                 {

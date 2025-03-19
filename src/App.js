@@ -2,6 +2,7 @@ import './App.css';
 import { mcqQuestions } from './questions';
 import Question from './Question';
 import Countdown from './Countdown';
+import Palette from './Palette';
 import { useState, useRef, use, useEffect } from 'react';
 
 function shuffleArray(array) {
@@ -21,9 +22,17 @@ function App() {
   const [is5050Clicked, setIs5050Clicked] = useState(false);
   const [isPollUsed, setIsPollUsed] = useState(false);
   const [pollResults, setPollResults] = useState({});
-  const [timer, setTimer] = useState(5);
+  const [questionsStatus, setQuestionsStatus] = useState([]);
+  const [timer, setTimer] = useState(30);
   const answers = useRef({});  //stores what answer we have chosen for which question
   const score = useRef(0);
+
+
+  useEffect(() => {
+    let tempArray = new Array(mcqQuestions.length).fill('not-viewed');
+    tempArray[0] = 'viewed';
+    setQuestionsStatus(tempArray);
+  }, [])
 
   useEffect(() => {
 
@@ -33,9 +42,15 @@ function App() {
 
     else if (timer === 0) {
       setIndex(curr => curr + 1);
-      setTimer(5);
+      setTimer(30);
     }
   }, [timer])
+
+  useEffect(() => {
+    let tempArray = questionsStatus;
+    tempArray[index] = 'viewed';
+    setQuestionsStatus(tempArray);
+  }, [index])
 
 
 
@@ -106,14 +121,21 @@ function App() {
 
   return (
     <div className="App">
-      <Countdown timer={timer} setTimer={setTimer} index={index}/>
+      <Countdown timer={timer} 
+        setTimer={setTimer} 
+        index={index}
+      />
       <Question 
         answers={answers}
         index={index}
         submitted={submitted}
         renderCount={renderCount}
         pollResults={pollResults}
+        questionsStatus={questionsStatus}
+        setQuestionsStatus={setQuestionsStatus}
       />
+
+      <Palette setIndex={setIndex} questionsStatus={questionsStatus}/>
 
       <div className='lifelines'>
         <button 

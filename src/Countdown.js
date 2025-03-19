@@ -27,7 +27,7 @@ export default function Countdown({timer, setTimer, index}) {
     }, [])
 
     return (
-        <p>Time: {timer}</p>
+        <p className="countdown">Time: {timer}</p>
     )
 
 
